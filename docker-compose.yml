@@ -1,0 +1,25 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: exec-dashboard-backend
+    env_file:
+      - ./backend/.env.example
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: exec-dashboard-frontend
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
